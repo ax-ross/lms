@@ -19,7 +19,7 @@ class LoginController extends Controller
             return new UserResource(Auth::user());
         }
         return response()->json([
-           'errors' => ['email' => 'Неверный email или пароль.']
+           'errors' => ['email' => __('auth.failed')]
         ], 401);
     }
 
