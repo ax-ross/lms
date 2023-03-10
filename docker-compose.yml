@@ -1,8 +1,8 @@
 services:
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: docker
+      dockerfile: app.Dockerfile
     restart: unless-stopped
     tty: true
     volumes:
@@ -43,6 +43,17 @@ services:
     restart: unless-stopped
     ports:
       - "8025:8025"
+    networks:
+      - app
+    depends_on:
+      - app
+  cron:
+    build:
+      context: docker/cron
+      dockerfile: cron.Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www
     networks:
       - app
     depends_on:
