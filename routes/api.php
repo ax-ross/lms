@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Course\CourseController;
+use App\Http\Controllers\Course\CourseStudentController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,4 +15,7 @@
 |
 */
 
-require __DIR__ . '/auth.php';
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('courses', CourseController::class);
+    Route::apiResource('courses.students', CourseStudentController::class)->only(['index', 'store', 'destroy']);
+});
