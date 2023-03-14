@@ -17,5 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('courses', CourseController::class);
-    Route::apiResource('courses.students', CourseStudentController::class)->only(['index', 'store', 'destroy']);
+    Route::apiResource('courses.students', CourseStudentController::class)
+        ->only(['index', 'store', 'destroy'])
+        ->scoped();
 });
