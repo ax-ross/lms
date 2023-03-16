@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Course\CourseController;
+use App\Http\Controllers\Course\CourseInvitationController;
 use App\Http\Controllers\Course\CourseStudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +21,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('courses.students', CourseStudentController::class)
         ->only(['index', 'store', 'destroy'])
         ->scoped();
+
+    Route::post("/course-invitations/{course_invitation}/accept", [CourseInvitationController::class, 'accept']);
+    Route::delete("/course-invitations/{course_invitation}/decline", [CourseInvitationController::class, 'decline']);
+    Route::apiResource('course-invitations', CourseInvitationController::class)
+        ->only(['index', 'store', 'destroy']);
 });

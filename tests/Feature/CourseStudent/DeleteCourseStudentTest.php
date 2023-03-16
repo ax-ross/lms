@@ -49,7 +49,7 @@ class DeleteCourseStudentTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_teacher_cant_remove_non_student_user()
+    public function test_teacher_cant_remove_non_student_user(): void
     {
         $course = Course::factory()->create();
         $teacher = $course->teacher->user;
