@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseInvitationController;
+use App\Http\Controllers\Course\CourseSectionController;
 use App\Http\Controllers\Course\CourseStudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete("/course-invitations/{course_invitation}/decline", [CourseInvitationController::class, 'decline']);
     Route::apiResource('course-invitations', CourseInvitationController::class)
         ->only(['index', 'store', 'destroy']);
+
+    Route::apiResource('courses.sections', CourseSectionController::class)
+        ->only(['store', 'update', 'destroy'])
+        ->middleware('can:update,course');
 });

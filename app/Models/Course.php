@@ -32,6 +32,11 @@ class Course extends Model
         return $this->hasMany(CourseInvitation::class);
     }
 
+    public function sections(): HasMany
+    {
+        return $this->hasMany(CourseSection::class);
+    }
+
     public function scopePublic(Builder $query): void
     {
         $query->where('type', 'public');
