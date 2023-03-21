@@ -4,6 +4,7 @@ use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseInvitationController;
 use App\Http\Controllers\Course\CourseSectionController;
 use App\Http\Controllers\Course\CourseStudentController;
+use App\Http\Controllers\LessonController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,5 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('courses.sections', CourseSectionController::class)
         ->only(['store', 'update', 'destroy'])
+        ->scoped()
         ->middleware('can:update,course');
+
+    Route::apiResource('lessons', LessonController::class);
 });
