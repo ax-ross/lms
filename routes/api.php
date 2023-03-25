@@ -4,7 +4,8 @@ use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseInvitationController;
 use App\Http\Controllers\Course\CourseSectionController;
 use App\Http\Controllers\Course\CourseStudentController;
-use App\Http\Controllers\LessonController;
+use App\Http\Controllers\Lesson\LessonController;
+use App\Http\Controllers\Lesson\LessonImageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,4 +36,5 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('can:update,course');
 
     Route::apiResource('lessons', LessonController::class);
+    Route::post('/lessons/{lesson}/images', [LessonImageController::class, 'store']);
 });

@@ -1,16 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Lesson;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Lesson\StoreLessonRequest;
 use App\Http\Requests\Lesson\UpdateLessonRequest;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
+use App\Services\LessonService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Response;
 
 class LessonController extends Controller
 {
+    public function __construct(private readonly LessonService $lessonService)
+    {
+    }
+
     /**
      * Store a newly created resource in storage.
      * @throws AuthorizationException
@@ -19,8 +25,9 @@ class LessonController extends Controller
     {
         $payload = $request->validated();
         $this->authorize('create', [Lesson::class, $payload['section_id']]);
+        $images = $request->getImages();
 
-        $lesson = Lesson::create($payload);
+        $lesson = $this->lessonService->store($payload, $images);
 
         return new LessonResource($lesson);
     }
@@ -46,9 +53,9 @@ class LessonController extends Controller
 
         $this->authorize('update', [$lesson, $payload['section_id']]);
 
-        $lesson->update($payload);
+        $lesson = $this->lessonService->update($lesson, $payload);
 
-        return new LessonResource($lesson->fresh());
+        return new LessonResource($lesson);
     }
 
     /**
