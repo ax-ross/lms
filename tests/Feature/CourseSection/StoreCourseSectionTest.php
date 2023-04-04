@@ -4,8 +4,8 @@ namespace Tests\Feature\CourseSection;
 
 use App\Models\Course;
 use App\Models\CourseSection;
-use App\Models\Teacher;
 use App\Models\User;
+use DragonCode\Support\Facades\Helpers\Str;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,10 +13,10 @@ class StoreCourseSectionTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_owner_teacher_can_create_course_section(): void
+    public function test_teacher_can_create_course_section(): void
     {
         $course = Course::factory()->create();
-        $teacher = $course->teacher->user;
+        $teacher = $course->teacher;
 
         $response = $this->actingAs($teacher)->postJson("/courses/{$course->id}/sections", [
             'title' => 'test title',
@@ -25,21 +25,22 @@ class StoreCourseSectionTest extends TestCase
         ]);
 
         $response->assertStatus(201);
-        $this->assertTrue(CourseSection::where('title', 'test title')->exists());
+        $this->assertTrue($course->sections()->where('title', 'test title')->exists());
     }
 
-    public function test_non_owner_teacher_cant_create_course_section(): void
+    public function test_teacher_cant_create_course_section_with_invalid_data(): void
     {
         $course = Course::factory()->create();
-        $teacher = Teacher::factory()->create()->user;
+        $teacher = $course->teacher;
 
         $response = $this->actingAs($teacher)->postJson("/courses/{$course->id}/sections", [
-            'title' => 'test title',
-            'description' => 'test description',
-            'section_number' => 1
+            'title' => Str::random(256),
+            'description' => '',
+            'section_number' => 'test'
         ]);
 
-        $response->assertStatus(403);
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['message', 'errors' => ['title', 'description', 'section_number']]);
     }
 
     public function test_student_cant_create_course_section(): void

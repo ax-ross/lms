@@ -14,7 +14,7 @@ class LessonPolicy
     public function view(User $user, Lesson $lesson): bool
     {
         $course = $lesson->section->course;
-        return $user->id === $course->teacher->user->id || $course->students->contains($user->id);
+        return $user->id === $course->teacher->id || $course->students->contains($user->id);
     }
 
     /**
@@ -24,7 +24,7 @@ class LessonPolicy
     {
         $section = CourseSection::find($section_id);
 
-        return $user->id === $section->course->teacher->user->id;
+        return $user->id === $section->course->teacher->id;
     }
 
     /**
@@ -34,8 +34,8 @@ class LessonPolicy
     {
         $section = CourseSection::find($section_id);
 
-        return $user->id === $section->course->teacher->user->id &&
-            $lesson->section->course->teacher->user->id;
+        return $user->id === $section->course->teacher->id &&
+            $lesson->section->course->teacher->id;
     }
 
     /**
@@ -43,6 +43,6 @@ class LessonPolicy
      */
     public function delete(User $user, Lesson $lesson): bool
     {
-        return $user->id === $lesson->section->course->teacher->user->id;
+        return $user->id === $lesson->section->course->teacher->id;
     }
 }

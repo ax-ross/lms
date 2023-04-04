@@ -24,7 +24,7 @@ class AcceptCourseInvitationTest extends TestCase
         $this->assertTrue($course->students->contains($user));
     }
 
-    public function test_user_cant_accept_not_his_own_invitation(): void
+    public function test_not_invited_user_cant_accept_course_invitation(): void
     {
         $courseInvitation = CourseInvitation::factory()->create();
         $user = User::factory()->create();

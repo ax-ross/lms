@@ -36,5 +36,5 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('can:update,course');
 
     Route::apiResource('lessons', LessonController::class);
-    Route::post('/lessons/{lesson}/images', [LessonImageController::class, 'store']);
+    Route::post('/lesson-images', [LessonImageController::class, 'store']);
 });

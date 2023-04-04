@@ -30,11 +30,7 @@ class CourseController extends Controller
         $validatedPayload = $request->validated();
         $user = $request->user();
 
-        $course = null;
-        DB::transaction(function () use ($user, $validatedPayload, &$course) {
-            $teacher = $user->teacher ?? $user->teacher()->create();
-            $course = $teacher->courses()->create($validatedPayload);
-        });
+        $course = $user->taughtCourses()->create($validatedPayload);
 
         return new CourseResource($course);
     }

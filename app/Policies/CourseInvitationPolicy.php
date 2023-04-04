@@ -13,7 +13,7 @@ class CourseInvitationPolicy
      */
     public function create(User $user, Course $course): bool
     {
-        return $user->id === $course->teacher->user_id;
+        return $user->id === $course->teacher->id;
     }
 
     /**
@@ -21,7 +21,7 @@ class CourseInvitationPolicy
      */
     public function delete(User $user, CourseInvitation $courseInvitation): bool
     {
-        return $user->id === $courseInvitation->course->teacher->user->id;
+        return $user->id === $courseInvitation->course->teacher->id;
     }
 
     /**

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->text('description');
             $table->enum('type', ['private', 'public']);
-            $table->foreignId('teacher_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('teacher_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

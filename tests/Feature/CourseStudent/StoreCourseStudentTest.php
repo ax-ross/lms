@@ -11,21 +11,20 @@ class StoreCourseStudentTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_can_become_student_of_public_course(): void
+    public function test_user_can_join_to_public_course(): void
     {
         $course = Course::factory()->public()->create();
         $user = User::factory()->create();
+
         $response = $this->actingAs($user)->postJson("/courses/{$course->id}/students");
 
         $response->assertStatus(204);
-
         $this->assertNotNull($course->students->contains($user));
     }
 
-    public function test_user_cant_become_student_of_private_course(): void
+    public function test_user_cant_join_to_private_course(): void
     {
         $course = Course::factory()->private()->create();
-
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->postJson("/courses/{$course->id}/students");

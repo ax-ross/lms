@@ -26,7 +26,6 @@ class LessonController extends Controller
         $payload = $request->validated();
         $this->authorize('create', [Lesson::class, $payload['section_id']]);
         $images = $request->getImages();
-
         $lesson = $this->lessonService->store($payload, $images);
 
         return new LessonResource($lesson);

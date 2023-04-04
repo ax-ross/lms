@@ -13,15 +13,16 @@ class IndexCourseStudentTest extends TestCase
 
     public function test_student_can_view_course_participants(): void
     {
-        $course = Course::factory()->has(User::factory(), 'students')->create();
+        $course = Course::factory()->has(User::factory(5), 'students')->create();
         $student = $course->students->first();
 
         $response = $this->actingAs($student)->getJson("/courses/{$course->id}/students");
 
         $response->assertStatus(200);
+        $response->assertJsonCount(5, 'data');
     }
 
-    public function test_non_participant_user_cant_view_course_participants(): void
+    public function test_user_cant_view_course_participants(): void
     {
         $course = Course::factory()->create();
         $user = User::factory()->create();

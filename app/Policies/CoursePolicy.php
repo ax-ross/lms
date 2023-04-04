@@ -12,7 +12,7 @@ class CoursePolicy
     */
     public function before(User $user, string $ability, Course $course): ?bool
     {
-        return $course->teacher->user->id === $user->id ? true : null;
+        return $course->teacher->id === $user->id ? true : null;
     }
     
     /**
@@ -20,7 +20,7 @@ class CoursePolicy
      */
     public function view(User $user, Course $course): bool
     {
-        return !($course->type === 'private') || $course->students->contains($user);
+        return $course->students->contains($user);
     }
 
     /**

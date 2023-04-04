@@ -21,8 +21,22 @@ class StoreCourseTest extends TestCase
             'type' => 'public'
         ]);
 
-        $this->assertNotNull($user->fresh()->teacher);
-        $this->assertTrue(Course::where('title', 'course title')->exists());
         $response->assertStatus(201);
+        $this->assertNotNull($course = Course::where('title', 'course title')->first());
+        $this->assertNotNull($user->taughtCourses->contains($course));
+    }
+
+    public function test_user_cant_create_course_with_invalid_data(): void
+    {
+        Course::factory()->create(['title' => 'duplicate course title']);
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->postJson('/courses', [
+            'title' => 'duplicate course title',
+            'type' => 'invalid type'
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['message', 'errors' => ['title', 'description', 'type']]);
     }
 }

@@ -21,11 +21,11 @@ class StoreLessonRequest extends AuthorizedRequest
             'content' => 'required|string|max:65535',
             'section_id' => 'required|exists:course_sections,id',
             'imagePaths' => 'array',
-            'imagePaths.*' => function(string $attribute, mixed $value, Closure $fail) {
-                if ($this->images[] = LessonImage::findImageByAbsolutePath($value)) {
+            'imagePaths.*' => ['bail', 'string', function(string $attribute, mixed $value, Closure $fail) {
+                if (!$this->images[] = LessonImage::findImageByAbsolutePath($value)) {
                     $fail('Неверный путь до изображения');
                 }
-            }
+            }]
         ];
     }
 
