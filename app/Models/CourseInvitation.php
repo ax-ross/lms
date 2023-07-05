@@ -12,7 +12,7 @@ class CourseInvitation extends Model
 
     const UPDATED_AT = null;
 
-    protected $fillable = ['user_id', 'course_id', 'status'];
+    protected $fillable = ['user_id', 'course_id'];
 
     public function user(): BelongsTo
     {
