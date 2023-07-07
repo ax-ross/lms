@@ -9,6 +9,7 @@ use App\Models\LessonImage;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class UpdateLessonTest extends TestCase
@@ -17,9 +18,12 @@ class UpdateLessonTest extends TestCase
 
     public function test_teacher_can_update_lesson(): void
     {
+        Storage::fake('public');
+
         [$lesson, $oldImages] = $this->create_lesson_with_images();
         $teacher = $lesson->section->course->teacher;
         $images = LessonImage::factory()->count(5)->create(['lesson_id' => null]);
+        $this->assertTrue(true);
         $payload = $this->generate_payload_for_lesson_update($lesson, $images);
 
 

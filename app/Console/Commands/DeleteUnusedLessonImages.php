@@ -27,6 +27,7 @@ class DeleteUnusedLessonImages extends Command
      */
     public function handle(): void
     {
+        // FIXME delete only image what saved some time ago
         Storage::disk('public')->delete(LessonImage::whereNull('lesson_id')->pluck('path')->all());
         LessonImage::whereNull('lesson_id')->delete();
     }
