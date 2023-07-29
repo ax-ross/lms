@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y \
     git \
     curl
 
+RUN pecl install redis && docker-php-ext-enable redis
+
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install pdo_mysql zip intl bcmath

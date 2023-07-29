@@ -58,9 +58,22 @@ services:
       - app
     depends_on:
       - app
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+    ports:
+      - "6379:6379"
+    tty: true
+    volumes:
+      - redis-data:/bitnami/redis/data
+    networks:
+      - app
 networks:
   app:
     driver: bridge
 volumes:
   mysql-data:
+    driver: local
+  redis-data:
     driver: local
