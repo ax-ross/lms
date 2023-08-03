@@ -30,12 +30,9 @@ class LessonPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Lesson $lesson, int $section_id): bool
+    public function update(User $user, Lesson $lesson): bool
     {
-        $section = CourseSection::find($section_id);
-
-        return $user->id === $section->course->teacher->id &&
-            $lesson->section->course->teacher->id;
+        return $user->id === $lesson->section->course->teacher->id;
     }
 
     /**

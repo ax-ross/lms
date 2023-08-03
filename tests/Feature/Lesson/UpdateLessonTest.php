@@ -4,8 +4,8 @@ namespace Tests\Feature\Lesson;
 
 use App\Models\Course;
 use App\Models\CourseSection;
+use App\Models\Image;
 use App\Models\Lesson;
-use App\Models\LessonImage;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,8 +22,7 @@ class UpdateLessonTest extends TestCase
 
         [$lesson, $oldImages] = $this->create_lesson_with_images();
         $teacher = $lesson->section->course->teacher;
-        $images = LessonImage::factory()->count(5)->create(['lesson_id' => null]);
-        $this->assertTrue(true);
+        $images = Image::factory()->count(5)->create();
         $payload = $this->generate_payload_for_lesson_update($lesson, $images);
 
 
@@ -94,7 +93,7 @@ class UpdateLessonTest extends TestCase
 
     private function create_lesson_with_images(): array
     {
-        $images = LessonImage::factory()->count(3)->create();
+        $images = Image::factory()->count(3)->create();
         $content = $this->generate_random_html_with_images($images);
 
         $lesson = Lesson::factory()->create(['content' => $content]);

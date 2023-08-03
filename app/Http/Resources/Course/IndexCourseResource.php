@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Course;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CourseSectionResource extends JsonResource
+class IndexCourseResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,8 +19,10 @@ class CourseSectionResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'section_number' => $this->section_number,
-            'lessons' => LessonResource::collection($this->lessons),
+            'type' => $this->type,
+            'students_number' => $this->students->count(),
+            'teacher' => new UserResource($this->teacher),
+            'created_at' => $this->created_at->diffForHumans(),
         ];
     }
 }

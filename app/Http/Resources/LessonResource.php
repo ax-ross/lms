@@ -19,6 +19,7 @@ class LessonResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'created_at' => $this->created_at->diffForHumans(),
+            'tasks' => TaskResource::collection($this->tasks),
         ];
     }
 }

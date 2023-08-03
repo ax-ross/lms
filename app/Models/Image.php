@@ -4,14 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class LessonImage extends Model
+class Image extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['path', 'lesson_id'];
-    
+    protected $fillable = ['path', 'imageable_type', 'imageable_id'];
+
+    public function imageable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
     public static function findImageByAbsolutePath(string $absolutePath)
     {
         $path = parse_url($absolutePath, PHP_URL_PATH);
@@ -19,11 +24,6 @@ class LessonImage extends Model
             $path = substr($path, strlen('/storage/'));
         }
         $path = urldecode($path);
-        return LessonImage::where('path', $path)->first();
-    }
-
-    public function lesson(): BelongsTo
-    {
-        return $this->belongsTo(Lesson::class);
+        return Image::where('path', $path)->first();
     }
 }

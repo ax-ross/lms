@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Lesson;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Lesson\StoreLessonRequest;
 use App\Http\Requests\Lesson\UpdateLessonRequest;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
-use App\Services\LessonService;
+use App\Services\ImageService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Response;
 
 class LessonController extends Controller
 {
-    public function __construct(private readonly LessonService $lessonService)
+    public function __construct(private readonly ImageService $imageService)
     {
     }
 
@@ -26,7 +25,11 @@ class LessonController extends Controller
         $payload = $request->validated();
         $this->authorize('create', [Lesson::class, $payload['section_id']]);
         $images = $request->getImages();
-        $lesson = $this->lessonService->store($payload, $images);
+
+        $lesson = Lesson::create($payload);
+
+        //TODO optimize - one query
+        $lesson->images()->saveMany($images);
 
         return new LessonResource($lesson);
     }
@@ -50,9 +53,11 @@ class LessonController extends Controller
     {
         $payload = $request->validated();
 
-        $this->authorize('update', [$lesson, $payload['section_id']]);
+        $this->authorize('update', $lesson);
 
-        $lesson = $this->lessonService->update($lesson, $payload);
+        $lesson->update($payload);
+
+        $this->imageService->syncImagesByContent($lesson, $payload['content']);
 
         return new LessonResource($lesson);
     }

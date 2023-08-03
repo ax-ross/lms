@@ -8,7 +8,6 @@ use App\Http\Resources\CourseInvitationResource;
 use App\Models\Course;
 use App\Models\CourseInvitation;
 use App\Models\User;
-use App\Services\CourseInvitationService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

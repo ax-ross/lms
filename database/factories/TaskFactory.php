@@ -3,15 +3,12 @@
 namespace Database\Factories;
 
 use App\Models\Lesson;
-use App\Models\LessonImage;
-use DragonCode\Support\Facades\Helpers\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Http\UploadedFile;
 
 /**
- * @extends Factory<LessonImage>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Task>
  */
-class LessonImageFactory extends Factory
+class TaskFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,8 +18,10 @@ class LessonImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'path' => UploadedFile::fake()->image('test.jpg')->store('/lesson-images', 'public'),
+            'title' => fake()->text(255),
+            'description' => fake()->randomHtml(),
             'lesson_id' => Lesson::factory(),
+            'is_required' => true,
         ];
     }
 }

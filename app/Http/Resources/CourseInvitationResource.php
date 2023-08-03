@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Course\IndexCourseResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,7 +18,7 @@ class CourseInvitationResource extends JsonResource
         return [
             'id' => $this->id,
             'user' => new UserResource($this->user),
-            'course' => new CourseResource($this->course),
+            'course' => new IndexCourseResource($this->course),
             'created_at' => $this->created_at->diffForHumans()
         ];
     }

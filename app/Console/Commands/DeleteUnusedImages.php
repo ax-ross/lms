@@ -2,18 +2,19 @@
 
 namespace App\Console\Commands;
 
-use App\Models\LessonImage;
+use App\Models\Image;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
-class DeleteUnusedLessonImages extends Command
+class DeleteUnusedImages extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'lesson-images:delete-unused';
+    protected $signature = 'delete-unused-images';
 
     /**
      * The console command description.
@@ -27,8 +28,10 @@ class DeleteUnusedLessonImages extends Command
      */
     public function handle(): void
     {
-        // FIXME delete only image what saved some time ago
-        Storage::disk('public')->delete(LessonImage::whereNull('lesson_id')->pluck('path')->all());
-        LessonImage::whereNull('lesson_id')->delete();
+        $unusedImages = Image::query()->whereNull('imageable_id')
+            ->whereDate('created_at', '<', Carbon::now()->subDays(2));
+
+        Storage::disk('public')->delete($unusedImages->pluck('path')->all());
+        $unusedImages->delete();
     }
 }

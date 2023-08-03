@@ -4,7 +4,7 @@ namespace Tests\Feature\Lesson;
 
 use App\Models\Course;
 use App\Models\CourseSection;
-use App\Models\LessonImage;
+use App\Models\Image;
 use App\Models\User;
 use DragonCode\Support\Facades\Helpers\Str;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,7 +22,7 @@ class StoreLessonTest extends TestCase
 
         $section = CourseSection::factory()->create();
         $teacher = $section->course->teacher;
-        $images = LessonImage::factory()->count(3)->create();
+        $images = Image::factory()->count(3)->create();
 
         $payload = [
             'title' => 'lesson title',
@@ -71,7 +71,7 @@ class StoreLessonTest extends TestCase
         $section = $course->sections->first();
         $student = $course->students->first();
 
-        $images = LessonImage::factory()->count(3)->create();
+        $images = Image::factory()->count(3)->create();
 
         $payload = [
             'title' => 'lesson title',

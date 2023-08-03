@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\LessonImage;
+namespace Tests\Feature\Image;
 
 use App\Models\Lesson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -8,7 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class StoreLessonImageTest extends TestCase
+class StoreImageTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,9 +20,9 @@ class StoreLessonImageTest extends TestCase
         $teacher = $lesson->section->course->teacher;
         $image = UploadedFile::fake()->image('lesson-image.jpg');
 
-        $response = $this->actingAs($teacher)->postJson("/lesson-images", ['image' => $image]);
+        $response = $this->actingAs($teacher)->postJson("/images", ['image' => $image]);
 
         $response->assertStatus(200);
-        Storage::disk('public')->assertExists('/lesson-images/' . $image->hashName());
+        Storage::disk('public')->assertExists('/images/' . $image->hashName());
     }
 }

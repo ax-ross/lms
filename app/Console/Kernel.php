@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('auth:clear-resets')->everyFifteenMinutes();
-        $schedule->command('lesson-images:delete-unused')->dailyAt('01:40');
+        $schedule->command('delete-unused-images')->dailyAt('01:40');
     }
 
     /**
