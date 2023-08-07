@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Course extends Model
 {
@@ -25,6 +26,11 @@ class Course extends Model
         return $this->belongsToMany(
             User::class, 'course_student', 'course_id', 'student_id'
         )->withTimestamps();
+    }
+
+    public function chat(): HasOne
+    {
+        return $this->hasOne(Chat::class);
     }
 
     public function invitations(): HasMany

@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\CentrifugoProxyController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseInvitationController;
 use App\Http\Controllers\Course\CourseSectionController;
 use App\Http\Controllers\Course\CourseStudentController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,7 +42,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/images', [ImageController::class, 'store']);
 
-    Route::apiResource('lessons.tasks', \App\Http\Controllers\TaskController::class)
+    Route::apiResource('lessons.tasks', TaskController::class)
         ->except(['index'])
         ->scoped();
+
+    Route::post('/centrifugo/connect', [CentrifugoProxyController::class, 'connect']);
+
+    Route::apiResource('chats', ChatController::class)->only(['show', 'update']);
+    Route::prefix('/chats')->group(function () {
+        Route::post('/{chat}/add', [ChatController::class, 'addMember']);
+        Route::post('/{chat}/remove', [ChatController::class, 'removeMember']);
+        Route::post('/{chat}/ban', [ChatController::class, 'banMember']);
+    });
+
+    Route::apiResource('chats.messages', \App\Http\Controllers\MessageController::class)->scoped();
 });

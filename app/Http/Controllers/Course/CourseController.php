@@ -31,6 +31,8 @@ class CourseController extends Controller
         $user = $request->user();
 
         $course = $user->taughtCourses()->create($validatedPayload);
+        $chat = $course->chat()->create($validatedPayload);
+        $chat->users()->attach($user->id);
 
         return new ShowCourseResource($course);
     }

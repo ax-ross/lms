@@ -69,6 +69,20 @@ services:
       - redis-data:/bitnami/redis/data
     networks:
       - app
+  centrifugo:
+    image: centrifugo/centrifugo:v5
+    restart: unless-stopped
+    volumes:
+      - ./centrifugo/config.json:/centrifugo/config.json
+    command: centrifugo -c config.json
+    ports:
+      - "8000:8000"
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    networks:
+      - app
 networks:
   app:
     driver: bridge
